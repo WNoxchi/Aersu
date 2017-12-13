@@ -1,4 +1,5 @@
 # WNixalo 2017-Dec-13 14:33
+# NOTE: won't work right if unwanted .csv's exist in directory
 
 import pandas as pd
 import numpy as np
@@ -16,4 +17,4 @@ df = pd.read_csv(flist[0])
 for i in range(1, len(flist)):
     df = df.append(pd.read_csv(flist[i]))
 # save the new csv file
-df.to_csv('labels.csv', index=False)
+df.to_csv('data/labels.csv', index=False)
