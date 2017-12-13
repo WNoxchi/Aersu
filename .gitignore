@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# do not upload MASSIVE data directories
-data/
-=======
 # data directories
 data/
 
