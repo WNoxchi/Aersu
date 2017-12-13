@@ -14,6 +14,6 @@ flist = [g[i[0]] for i in temp]
 df = pd.read_csv(flist[0])
 # append all other csv's to DataFrame
 for i in range(1, len(flist)):
-    df.append(pd.read_csv(flist[i]))
+    df = df.append(pd.read_csv(flist[i]))
 # save the new csv file
 df.to_csv('labels.csv', index=False)
