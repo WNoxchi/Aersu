@@ -30,4 +30,4 @@ newdf = pd.DataFrame(newcol, columns=['id'])
 newdf.insert(1, 'gloc', df['gloc'])
 
 # save new DataFrame
-newdf.to_csv('data/labels.csv')
+newdf.to_csv('data/labels.csv', index=False)
