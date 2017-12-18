@@ -4,7 +4,7 @@
 import numpy as np
 from pandas import read_csv
 
-def set_cv_idxs(val_pct=0.2, thresh=0.05, seed=None):
+def set_cv_idxs(label_csv, val_pct=0.2, thresh=0.05, seed=None):
     # set random seed if specfd
     if seed != None: np.random.seed(seed)
 
