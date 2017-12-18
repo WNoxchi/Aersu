@@ -67,6 +67,6 @@ def set_cv_idxs(label_csv, val_pct=0.2, thresh=0.05, seed=None):
         start, end = list(map(lambda x: int(x), valfolders[idx].split('-')))
         start -= subtract_idx[vdx]
         end   -= subtract_idx[vdx]
-        val_idxs.extend(np.arange(start, end+1)).astype(np.int32)   # otherwise will be Floats
+        val_idxs.extend(np.arange(start, end+1).astype(np.int32))   # otherwise will be Floats
 
     return val_idxs
