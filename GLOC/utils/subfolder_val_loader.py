@@ -1,6 +1,9 @@
 # Wayne Nixalo - 2017-Dec-17 23:07 - 2017-Dec-18 01:49
 # NOTE: this function makes some very specific assumptions I've not documented yet!
 
+import numpy as np
+from pandas import read_csv
+
 def set_cv_idxs(val_pct=0.2, thresh=0.05, seed=None):
     # set random seed if specfd
     if seed != None: np.random.seed(seed)
@@ -9,7 +12,7 @@ def set_cv_idxs(val_pct=0.2, thresh=0.05, seed=None):
     assert val_pct < 1, "Validation Percent must be below 100: %f" % val_pct
 
     # get labels csv
-    df = pd.read_csv(label_csv)
+    df = read_csv(label_csv)
     labels = df[df.columns[0]].as_matrix()
 
     # build subfolders array
