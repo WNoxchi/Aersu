@@ -1,5 +1,5 @@
 # archives
-.zip
+*.zip
 
 # data directories
 data/
