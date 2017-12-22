@@ -1,0 +1,29 @@
+BUILDING A NEW G-LOC DATASET WORKFLOW:
+
+
+#   activate aersu environment (fastai + mss pkg)
+
+
+### getting the data
+datagetter.py
+
+### merge all csvs into a single labels.csv
+combine_labels_script.py
+
+### correct file ids from XX -> 0000XX
+name_corrector.py
+
+### organize all files into subfolders
+subfolderize.py
+
+### correct csv filenames to include subfolder path
+directorize_fnames.py
+
+
+#   zip -qr data.zip data/
+
+### move dataset to workstation
+rsync <path to zipfile> remoteusername@remotehostname:<destination path>
+
+
+### unzip

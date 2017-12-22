@@ -7,9 +7,12 @@
 
 import pandas as pd
 from glob import glob
+from os import path
 
 # get subdirectory names
-dirnames = glob('data/train/*/')
+# if train/ directory exists, use that, else data/
+dirpath = 'data/train/' if path.exists('data/train/') else 'data/'
+dirnames = glob(dirpath + '*/')
 for i,d in enumerate(dirnames):
     dirnames[i] = d.split('/')[-2]                      # example: 'data/train/000000-003707/' --> '000000-003707'
 dirnames.sort()
