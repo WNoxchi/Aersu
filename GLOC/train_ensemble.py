@@ -22,7 +22,7 @@ val_idxs = [0]  # FastAI bug; need some val idxs
 wd = 1.25e-3
 
 
-def get_data(size, bs=32, resize=False, test_name=None):
+def get_data(arch, arch, size, bs=32, resize=False, test_name=None):
     tfms = tfms_from_model(arch, size, aug_tfms=transforms_side_on, max_zoom=1.2)
     data = ImageClassifierData.from_csv(PATH, 'train', labels_csv, bs=bs, tfms=tfms,
                                         val_idxs=val_idxs, suffix='.jpg', num_workers=8,
@@ -49,15 +49,15 @@ def train_loop(learner):
     print(f'{model_name} TRAINING COMPLETE. TIME: {H}:{M:0=2d}:{S:.3f}\n')
 
 def train_model(arch, model_name):
-    data = get_data(100)
-    learner = ConvLearner.pretrained(arch, data)
+    data = get_data(arch, 100)                                    # I guess I have to add `arch` bc it's in a function so
+    learner = ConvLearner.pretrained(arch, data)            # it doesnt carry down the namespace?
     train_loop(learner)
 
-    data = get_data(200)
+    data = get_data(arch, 200)
     learner.set_data(data)
     train_loop(learner)
 
-    data = get_data(400)
+    data = get_data(arch, 400)
     leraner.set_data(data)
     train_loop(learner)
 
@@ -99,15 +99,15 @@ def main():
     model_name = 'GLOC_RNX101-64'
     arch = resnext101_64
 
-    data = get_data(100)
+    data = get_data(arch, 100)
     learner = ConvLearner.pretrained(arch, data)
     train_loop(learner)
 
-    data = get_data(200)
+    data = get_data(arch, 200)
     learner.set_data(data)
     train_loop(learner)
 
-    data = get_data(400, bs = 26)
+    data = get_data(arch, 400, bs = 26)
     leraner.set_data(data)
     train_loop(learner)
 
@@ -131,11 +131,11 @@ def main():
     #### VGG16BN (FASTAI) ####
     model_name = 'GLOC_VGG16_224'
     arch = vgg16
-    data = get_data(100)
+    data = get_data(arch, 100)
     learner = ConvLearner.pretrained(arch, data)
     train_loop(learner)
 
-    data = get_data(224)
+    data = get_data(arch, 224)
     learner.set_data(data)
     train_loop(learner)
 
