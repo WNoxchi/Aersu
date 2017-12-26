@@ -62,88 +62,96 @@ def train_model(arch, model_name):
 
     learner.save(model_name)
 
+def main():
 
-#### RESNET 34 ####
-model_name = 'GLOC_RN34'
-arch = resnet34
-train_model(arch, model_name)
+    #### RESNET 34 ####
+    model_name = 'GLOC_RN34'
+    arch = resnet34
+    train_model(arch, model_name)
 
-#### RESNET 50 ####
-model_name = 'GLOC_RN50'
-arch = resnet50
-train_model(arch, model_name)
+    #### RESNET 50 ####
+    model_name = 'GLOC_RN50'
+    arch = resnet50
+    train_model(arch, model_name)
 
-#### DENSENET 121 ####
-model_name = 'GLOC_DN121'
-arch = dn121
-train_model(arch, model_name)
+    #### DENSENET 121 ####
+    model_name = 'GLOC_DN121'
+    arch = dn121
+    train_model(arch, model_name)
 
-#### DENSENET 169 ####
-model_name = 'GLOC_DN169'
-arch = dn169
-train_model(arch, model_name)
+    #### DENSENET 169 ####
+    model_name = 'GLOC_DN169'
+    arch = dn169
+    train_model(arch, model_name)
 
-#### RESNEXT 50 (32X4) ####
-model_name = 'GLOC_RNX50'
-arch = resnext50
-train_model(arch, model_name)
+    #### RESNEXT 50 (32X4) ####
+    model_name = 'GLOC_RNX50'
+    arch = resnext50
+    train_model(arch, model_name)
 
-#### RESNEXT 101 (32X4) ####
-model_name = 'GLOC_RNX101'
-arch = resnext101
-train_model(arch, model_name)
+    #### RESNEXT 101 (32X4) ####
+    model_name = 'GLOC_RNX101'
+    arch = resnext101
+    train_model(arch, model_name)
 
-#### RESNEXT 101 (64X4) ####
-model_name = 'GLOC_RNX101-64'
-arch = resnext101_64
+    #### RESNEXT 101 (64X4) ####
+    model_name = 'GLOC_RNX101-64'
+    arch = resnext101_64
 
-data = get_data(100)
-learner = ConvLearner.pretrained(arch, data)
-train_loop(learner)
+    data = get_data(100)
+    learner = ConvLearner.pretrained(arch, data)
+    train_loop(learner)
 
-data = get_data(200)
-learner.set_data(data)
-train_loop(learner)
+    data = get_data(200)
+    learner.set_data(data)
+    train_loop(learner)
 
-data = get_data(400, bs = 26)
-leraner.set_data(data)
-train_loop(learner)
+    data = get_data(400, bs = 26)
+    leraner.set_data(data)
+    train_loop(learner)
 
-learner.save(model_name)
+    learner.save(model_name)
 
-#### WIDERESNET 50 (24) ####
-model_name = 'GLOC_WRN50'
-arch = wrn
-train_model(arch, model_name)
+    #### WIDERESNET 50 (24) ####
+    model_name = 'GLOC_WRN50'
+    arch = wrn
+    train_model(arch, model_name)
 
-#### INCEPTION RESNET V2 ####
-model_name = 'GLOC_IRNV2'
-arch = inceptionresnet_2
-train_model(arch, model_name)
+    #### INCEPTION RESNET V2 ####
+    model_name = 'GLOC_IRNV2'
+    arch = inceptionresnet_2
+    train_model(arch, model_name)
 
-#### INCEPTION V4 ####
-model_name = 'GLOC_IV4'
-arch = inception_4
-train_model(arch, model_name)
+    #### INCEPTION V4 ####
+    model_name = 'GLOC_IV4'
+    arch = inception_4
+    train_model(arch, model_name)
 
-#### VGG16BN (FASTAI) ####
-model_name = 'GLOC_VGG16_224'
-arch = vgg16
-data = get_data(100)
-learner = ConvLearner.pretrained(arch, data)
-train_loop(learner)
+    #### VGG16BN (FASTAI) ####
+    model_name = 'GLOC_VGG16_224'
+    arch = vgg16
+    data = get_data(100)
+    learner = ConvLearner.pretrained(arch, data)
+    train_loop(learner)
 
-data = get_data(224)
-learner.set_data(data)
-train_loop(learner)
+    data = get_data(224)
+    learner.set_data(data)
+    train_loop(learner)
 
-learner.save(model_name)
+    learner.save(model_name)
 
-#### RETINANET ####
-# TODO
+    #### RETINANET ####
+    # TODO
 
+if __name__ == "__main__":
+    # main()
 
+    #### PATH DEBUG:
+    import os
 
+    print(os.listdir(os.getcwd() + '/data/train/'))
+
+    
 
 
 
