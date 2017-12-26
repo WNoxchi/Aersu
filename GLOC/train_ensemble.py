@@ -28,7 +28,7 @@ def get_data(size, bs=32, resize=False, test_name=None):
         data.resize(int(size), 'tmp')
     return data
 
-def train_loop():
+def train_loop(learner):
     t0 = time.time()
 
     print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 1/10')
@@ -48,15 +48,15 @@ def train_loop():
 def train_model(arch, model_name):
     data = get_data(100)
     learner = ConvLearner.pretrained(arch, data)
-    train_loop()
+    train_loop(learner)
 
     data = get_data(200)
     learner.set_data(data)
-    train_loop()
+    train_loop(learner)
 
     data = get_data(400)
     leraner.set_data(data)
-    train_loop()
+    train_loop(learner)
 
     learner.save(model_name)
 
@@ -94,7 +94,20 @@ train_model(arch, model_name)
 #### RESNEXT 101 (64X4) ####
 model_name = 'GLOC_RNX101-64'
 arch = resnext101_64
-train_model(arch, model_name)
+
+data = get_data(100)
+learner = ConvLearner.pretrained(arch, data)
+train_loop(learner)
+
+data = get_data(200)
+learner.set_data(data)
+train_loop(learner)
+
+data = get_data(400, bs = 26)
+leraner.set_data(data)
+train_loop(learner)
+
+learner.save(model_name)
 
 #### WIDERESNET 50 (24) ####
 model_name = 'GLOC_WRN50'
@@ -116,11 +129,11 @@ model_name = 'GLOC_VGG16_224'
 arch = vgg16
 data = get_data(100)
 learner = ConvLearner.pretrained(arch, data)
-train_loop()
+train_loop(learner)
 
 data = get_data(224)
 learner.set_data(data)
-train_loop()
+train_loop(learner)
 
 learner.save(model_name)
 
