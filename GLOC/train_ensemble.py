@@ -22,7 +22,7 @@ val_idxs = [0]  # FastAI bug; need some val idxs
 wd = 1.25e-3
 
 
-def get_data(arch, arch, size, bs=32, resize=False, test_name=None):
+def get_data(arch, size, bs=32, resize=False, test_name=None):
     tfms = tfms_from_model(arch, size, aug_tfms=transforms_side_on, max_zoom=1.2)
     data = ImageClassifierData.from_csv(PATH, 'train', labels_csv, bs=bs, tfms=tfms,
                                         val_idxs=val_idxs, suffix='.jpg', num_workers=8,
