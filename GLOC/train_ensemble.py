@@ -9,9 +9,11 @@ from fastai_lin.torch_imports import *
 # from utils.subfolder_val_loader import set_cv_idxs
 
 import time
+import os
 
 
-PATH = 'data/'
+# PATH = 'data/'
+PATH = os.path.expanduser('~') + '/Aersu/GLOC/data/'
 labels_csv = PATH + 'labels.csv'
 val_idxs = [0]  # FastAI bug; need some val idxs
 
