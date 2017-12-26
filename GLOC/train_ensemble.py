@@ -34,21 +34,19 @@ def get_data(arch, size, bs=32, resize=False, test_name=None):
 def train_loop(learner, model_name):
     t0 = time.time()
 
-    print(λr, wd)
+    print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 1/10')
+    learner.fit(lrs=λr, n_cycle=1, cycle_len=1)
+    print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 2/10')
+    learner.fit(lrs=λr, n_cycle=3, cycle_len=1, wds=wd, use_wd_sched=True)
+    print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 5/10')
+    learner.fit(lrs=λr, n_cycle=3, cycle_len=1, cycle_mult=2, wds=wd, use_wd_sched=True)
 
-    # print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 1/10')
-    # learner.fit(lrs=λr, n_cycle=1, cycle_len=1)
-    # print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 2/10')
-    # learner.fit(lrs=λr, n_cycle=3, cycle_len=1, wds=wd, use_wd_sched=True)
-    # print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 5/10')
-    # learner.fit(lrs=λr, n_cycle=3, cycle_len=1, cycle_mult=2, wds=wd, use_wd_sched=True)
-    #
-    # t = time.time() - t0
-    # H = int(t / 3600)
-    # M = int((t - H*3600) / 60)
-    # S = t - H*3600 - M*60
-    #
-    # print(f'{model_name} TRAINING COMPLETE. TIME: {H}:{M:0=2d}:{S:.3f}\n')
+    t = time.time() - t0
+    H = int(t / 3600)
+    M = int((t - H*3600) / 60)
+    S = t - H*3600 - M*60
+
+    print(f'{model_name} TRAINING COMPLETE. TIME: {H}:{M:0=2d}:{S:.3f}\n')
 
 def train_model(arch, model_name):
     data = get_data(arch, 100)                                    # I guess I have to add `arch` bc it's in a function so
@@ -63,7 +61,7 @@ def train_model(arch, model_name):
     learner.set_data(data)
     train_loop(learner, model_name)
 
-    # learner.save(model_name)
+    learner.save(model_name)
 
 def main():
 
@@ -98,22 +96,22 @@ def main():
     train_model(arch, model_name)
 
     #### RESNEXT 101 (64X4) ####
-    # model_name = 'GLOC_RNX101-64'
-    # arch = resnext101_64
-    #
-    # data = get_data(arch, 100)
-    # learner = ConvLearner.pretrained(arch, data)
-    # train_loop(learner, model_name)
-    #
-    # data = get_data(arch, 200)
-    # learner.set_data(data)
-    # train_loop(learner, model_name)
-    #
-    # data = get_data(arch, 400, bs = 26)
-    # learner.set_data(data)
-    # train_loop(learner, model_name)
-    #
-    # learner.save(model_name)
+    model_name = 'GLOC_RNX101-64'
+    arch = resnext101_64
+
+    data = get_data(arch, 100)
+    learner = ConvLearner.pretrained(arch, data)
+    train_loop(learner, model_name)
+
+    data = get_data(arch, 200)
+    learner.set_data(data)
+    train_loop(learner, model_name)
+
+    data = get_data(arch, 400, bs = 26)
+    learner.set_data(data)
+    train_loop(learner, model_name)
+
+    learner.save(model_name)
 
     #### WIDERESNET 50 (24) ####
     model_name = 'GLOC_WRN50'
@@ -131,17 +129,17 @@ def main():
     train_model(arch, model_name)
 
     #### VGG16BN (FASTAI) ####
-    # model_name = 'GLOC_VGG16_224'
-    # arch = vgg16
-    # data = get_data(arch, 100)
-    # learner = ConvLearner.pretrained(arch, data)
-    # train_loop(learner, model_name)
-    #
-    # data = get_data(arch, 224)
-    # learner.set_data(data)
-    # train_loop(learner, model_name)
-    #
-    # learner.save(model_name)
+    model_name = 'GLOC_VGG16_224'
+    arch = vgg16
+    data = get_data(arch, 100)
+    learner = ConvLearner.pretrained(arch, data)
+    train_loop(learner, model_name)
+
+    data = get_data(arch, 224)
+    learner.set_data(data)
+    train_loop(learner, model_name)
+
+    learner.save(model_name)
 
     #### RETINANET ####
     # TODO
