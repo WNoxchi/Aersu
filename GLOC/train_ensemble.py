@@ -60,7 +60,7 @@ def train_model(arch, model_name):
     train_loop(learner, model_name)
 
     data = get_data(arch, 400)
-    leraner.set_data(data)
+    learner.set_data(data)
     train_loop(learner, model_name)
 
     # learner.save(model_name)
@@ -110,7 +110,7 @@ def main():
     # train_loop(learner, model_name)
     #
     # data = get_data(arch, 400, bs = 26)
-    # leraner.set_data(data)
+    # learner.set_data(data)
     # train_loop(learner, model_name)
     #
     # learner.save(model_name)
