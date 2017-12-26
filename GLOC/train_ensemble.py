@@ -31,7 +31,7 @@ def get_data(arch, size, bs=32, resize=False, test_name=None):
         data.resize(int(size), 'tmp')
     return data
 
-def train_loop(learner):
+def train_loop(learner, model_name):
     t0 = time.time()
 
     print(f'TRAINING LOOP {model_name}: {learner.data.sz} - 1/10')
@@ -51,15 +51,15 @@ def train_loop(learner):
 def train_model(arch, model_name):
     data = get_data(arch, 100)                                    # I guess I have to add `arch` bc it's in a function so
     learner = ConvLearner.pretrained(arch, data)            # it doesnt carry down the namespace?
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     data = get_data(arch, 200)
     learner.set_data(data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     data = get_data(arch, 400)
     leraner.set_data(data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     learner.save(model_name)
 
@@ -101,15 +101,15 @@ def main():
 
     data = get_data(arch, 100)
     learner = ConvLearner.pretrained(arch, data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     data = get_data(arch, 200)
     learner.set_data(data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     data = get_data(arch, 400, bs = 26)
     leraner.set_data(data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     learner.save(model_name)
 
@@ -133,11 +133,11 @@ def main():
     arch = vgg16
     data = get_data(arch, 100)
     learner = ConvLearner.pretrained(arch, data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     data = get_data(arch, 224)
     learner.set_data(data)
-    train_loop(learner)
+    train_loop(learner, model_name)
 
     learner.save(model_name)
 
