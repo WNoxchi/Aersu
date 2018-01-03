@@ -6,7 +6,7 @@ from PIL import Image
 from keras_retinanet.utils.image import preprocess_image, resize_image
 import time
 
-def detect(image, threshold=0.5, mode='ss', fname='', model=None):
+def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     """
     Runs RetinaNet detection on image, drawing bounding-boxes around
     detections.
@@ -82,6 +82,8 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
 
         # return chosen bounding box OR reject-flag
         if inp == 0:
+            if not quiet:
+                print(f'{fname} rejected: manual labelling')
             return inp
 
         b = detections[0, inp-1, :4].astype(int)
@@ -96,6 +98,9 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
 
     for i in range(len(b)):
         b[i] = max(0, b[i])
+
+    if not quiet:
+        print(f'Bbox: {b} chosen')
 
     return b    # numpy.int64 ndarray
 
@@ -145,7 +150,7 @@ def c_shift(c=[255,0,0], n=1, shifts=1, val=255, quiet=True):
     return tuple(c) # changed to tuple for OpenCV
 
 
-# Wayne H Nixalo -- 2018-Jan-03 13:00
+# Wayne H Nixalo -- 2018-Jan-03 13:00 - 14:00
 # image cropper
 def crop(image, bbox):
     """
@@ -159,6 +164,22 @@ def crop(image, bbox):
 
 
 
+
+
+
+### testing crop():
+# fpath = 'data/train/006440-006548/006530.jpg'
+# image = Image.open(fpath)
+# image = np.array(image)
+# image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+# bbox = [7,53,168,306]
+# cropped = crop(image, bbox)
+# cv2.imshow('', cropped)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
+### testing c_shift():
 # c_shift(c=[150,0,0], n=5, shifts=5, val=150, quiet=False)
 # # print: [150, 0, 0]
 # # print: [60.0, 90.0, 0]
