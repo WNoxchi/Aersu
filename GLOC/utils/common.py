@@ -7,6 +7,10 @@ from keras_retinanet.utils.image import preprocess_image, resize_image
 import time
 
 def detect(image, threshold=0.5, mode='ss', fname='', model=None):
+    """
+    Runs RetinaNet detection on image, drawing bounding-boxes around
+    detections.
+    """
     # copy image to draw on
     draw = image.copy()
     # draw = cv2.cvtColor(draw, cv2.COLOR_BGR2RGB)
@@ -57,9 +61,21 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
 
         # semi-supervised labelling
         inp = None
-        while type(inp) != str or not inp.isdigit() or int(inp) < 0 or int(inp) > 5:
+        while True:
             inp = input("Index: ")
-        inp = int(inp)
+            if type(inp) == str and inp.isdigit():
+                if int(inp) > 0 and int(inp) < 5:
+                    inp = int(inp)
+                    break
+                elif int(inp) == 0:
+                    inp = 0
+                    break
+            # enter letter to reload window
+            elif type(inp) == str and not inp.isdigit():
+                cv2.destroyAllWindows()
+                cv2.imshow(fname, draw)
+                cv2.waitKey(1)
+                time.sleep(1e-2)
 
         # close image window
         cv2.destroyAllWindows()
@@ -91,6 +107,10 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
 #        n=n --> n colors shifted by 255*3/n
 
 def c_shift(c=[255,0,0], n=1, shifts=1, val=255, quiet=True):
+    """
+    Creates equal-sized shifts in color, where size is val*3/n, starting with
+    pure-Red and ending with pure-Blue (assuming RGB).
+    """
     f = val*3/n # 255*3/5 = 153
     shifts = min(n, shifts)
     c = list(c)
@@ -123,6 +143,20 @@ def c_shift(c=[255,0,0], n=1, shifts=1, val=255, quiet=True):
     c = [round(x) for x in c]
 
     return tuple(c) # changed to tuple for OpenCV
+
+
+# Wayne H Nixalo -- 2018-Jan-03 13:00
+# image cropper
+def crop(image, bbox):
+    """
+    bbox:[x1,y1,x2,y2]
+    roi: [y1:y2,x1:x2]
+    image: (ndarray)
+    """
+    p1,p2 = (bbox[0],bbox[1]), (bbox[2],bbox[3])
+    crop = image.copy()
+    return crop[p1[1]:p2[1], p1[0]:p2[0]]
+
 
 
 # c_shift(c=[150,0,0], n=5, shifts=5, val=150, quiet=False)
