@@ -1,3 +1,5 @@
+# Wayne H Nixalo - 2018-Jan-02 19:59
+
 # fizry/keras-retinanet/keras_retinanet/preprocessing/coco.py
 # cocodataset/cocoapi/PythonAPI/pycocotools/coco.py
 
@@ -17,6 +19,7 @@ classes, labels = load_classes_and_labels()
 
 # IMPORTANT PART
 caption = label_to_name(label)
+
 
 
 # Functional Implementation of COCO and CocoGenerator classes for labels
@@ -108,11 +111,11 @@ def _isArrayLike(obj):
     return hasattr(obj, '__iter__') and hasattr(obj, '__len__')
 
 # name_to_label(self,name)
-def name_to_label(name):
+def name_to_label(name, classes):
     return classes[name]
 
 # label_to_name(self, label)
-def label_to_name(label):
+def label_to_name(label, labels):
     return labels[label]
 
-classes, labels = load_classes_and_labels()
+# classes, labels = load_classes_and_labels()
