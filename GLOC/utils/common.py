@@ -77,6 +77,10 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
                 cv2.waitKey(1)
                 time.sleep(1e-2)
 
+                if inp == 'q':
+                    print('Exit Signal Entered: Quitting.')
+                    return -1
+
         # close image window
         cv2.destroyAllWindows()
 
@@ -96,6 +100,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
         else:
             return 0
 
+    # convert to ints
     for i in range(len(b)):
         b[i] = max(0, b[i])
 

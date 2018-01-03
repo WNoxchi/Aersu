@@ -25,39 +25,47 @@ def get_session():
     config.gpu_options.allow_growth = True # will this eat all GRAM?
     return tf.Session(config=config)
 
-keras.backend.tensorflow_backend.set_session(get_session())
+def main():
 
-model = keras.models.load_model('data/retinanet-model/resnet50_coco_best_v1.2.2.h5',
-                                custom_objects=custom_objects)
+    keras.backend.tensorflow_backend.set_session(get_session())
 
-# tpath = 'data/train/'
-# tempath = 'data/tmp/'
-# rejectpath = tempath + 'reject/'
-# folders = os.listdir(tpath)
-# folders.sort()  # subfolders are numerically ordered
-#
-# for folder in folders:
-#     # get all filenames
-#     fnames = os.listdir(tpath + folder)
-#     fnames.sort()
-#
-#     # run detection on each file
-#     for fname in fnames:
-#         image = Image.open(tpath+folder+'/'+fname)
-#         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-#         b = detect(image=image, model=model, mode='ss', fname=fname)
-#
-#         if type(b)==list:
-#             cropped = crop(image, b)
-#             cv2.imwrite()
-#
-# # TODO: crop and save image
-#     # if bounding box save to tmp/
-#     cropped = crop(image)
-#
-#     # if rejected save for manual
+    model = keras.models.load_model('data/retinanet-model/resnet50_coco_best_v1.2.2.h5',
+                                    custom_objects=custom_objects)
 
+    tpath = 'data/train/'
+    tempath = 'data/tmp/'
+    rejectpath = tempath + 'reject/'
+    folders = os.listdir(tpath)
+    folders.sort()  # subfolders are numerically ordered
 
+    for folder in folders:
+        # get all filenames
+        fnames = os.listdir(tpath + folder)
+        fnames.sort()
+
+        # run detection on each file
+        for fname in fnames:
+            fpath = tpath+folder+'/'+fname
+            image = Image.open(fpath)
+            image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+            b = detect(image=image, model=model, mode='ss', fname=fname)
+
+            # crop & save to tmp/ if bounding box
+            if type(b)==list:
+                cropped = crop(image, b)
+                cv2.imwrite(tempath+folder+'/'+'crop_'+fname, cropped)
+
+            # otherwise save original to reject/ for manual labelling
+            elif type(b)==int:
+                # Exit Signal
+                if b == -1:
+                    return
+                cv2.imwrite(rejectpath+folder+'/'+fname, image)
+
+    return
+
+if __name__ =='__main__':
+    main()
 
 
 
@@ -67,12 +75,12 @@ model = keras.models.load_model('data/retinanet-model/resnet50_coco_best_v1.2.2.
 # detect(image)
 
 
-# TEST:
-x = detect(image=cv2.cvtColor(np.array(Image.open('data/train/006440-006548/006530.jpg')),
-                              cv2.COLOR_RGB2BGR), model=model, fname='006530.jpg')
-
-if type(x) == np.ndarray:
-    print(f'Chosen Bounding Box: {x}')
+# # TEST:
+# x = detect(image=cv2.cvtColor(np.array(Image.open('data/train/006440-006548/006530.jpg')),
+#                               cv2.COLOR_RGB2BGR), model=model, fname='006530.jpg')
+#
+# if type(x) == np.ndarray:
+#     print(f'Chosen Bounding Box: {x}')
 
 
 
