@@ -42,9 +42,9 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
         λ_wd = 2 if idx > 0 else 4
         cv2.rectangle(draw, (b[0], b[1]), (b[2], b[3]), c, λ_wd)
         caption = f'{idx+1}'
-        cv2.putText(draw, caption, (b[0], b[1] - 10),
+        cv2.putText(draw, caption, (b[0]+10, b[1]+30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 3, cv2.LINE_AA)
-        cv2.putText(draw, caption, (b[0], b[1] - 10),
+        cv2.putText(draw, caption, (b[0]+10, b[1]+30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 3, cv2.LINE_AA)
 
         # print label indices, bounding boxes, and scores
@@ -57,8 +57,9 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None):
 
     # semi-supervised labelling
     inp = None
-    while type(inp) != int or inp < 0 or inp > 5:
-        inp = int(input("Index: "))
+    while type(inp) != str or not inp.isdigit() or int(inp) < 0 or int(inp) > 5:
+        inp = input("Index: ")
+    inp = int(inp)
 
     # close image window
     cv2.destroyAllWindows()
