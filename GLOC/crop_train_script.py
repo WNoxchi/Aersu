@@ -48,18 +48,26 @@ def main():
             fpath = tpath+folder+'/'+fname
             image = Image.open(fpath)
             image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-            b = detect(image=image, model=model, mode='ss', fname=fname)
+            b = detect(image=image, model=model, mode='ss', fname=fname, quiet=False)
 
             # crop & save to tmp/ if bounding box
-            if type(b)==list:
+            if type(b)==np.ndarray:
+                # add folder if not there
+                if folder not in os.listdir(tempath):
+                    os.mkdir(tempath + folder)
+
                 cropped = crop(image, b)
                 cv2.imwrite(tempath+folder+'/'+'crop_'+fname, cropped)
+                # print(tempath+folder+'/'+'crop_'+fname)
 
             # otherwise save original to reject/ for manual labelling
             elif type(b)==int:
                 # Exit Signal
                 if b == -1:
                     return
+                # add folder if not there
+                if folder not in os.listdir(rejectpath):
+                    os.mkdir(rejectpath + folder)
                 cv2.imwrite(rejectpath+folder+'/'+fname, image)
 
     return
