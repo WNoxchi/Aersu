@@ -18,6 +18,7 @@ from keras_retinanet.models.resnet import custom_objects
 from utils.common import c_shift
 from utils.common import detect
 from utils.common import crop
+from utils.common import save_crop_overlay
 
 ### INIT TF & MODEL
 def get_session():
@@ -26,6 +27,11 @@ def get_session():
     return tf.Session(config=config)
 
 def main():
+    """
+    Saves images cropped by bounding boxes from common.detect() to a temporary
+    folder. If no bounding-box is returned, a copy of the image is saved to a
+    reject folder for manual processing.
+    """
 
     keras.backend.tensorflow_backend.set_session(get_session())
 
@@ -46,8 +52,9 @@ def main():
         # run detection on each file
         for fname in fnames:
             fpath = tpath+folder+'/'+fname
-            image = Image.open(fpath)
-            image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+            # image = Image.open(fpath)
+            image = cv2.imread(fpath)
+            image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
             b = detect(image=image, model=model, mode='ss', fname=fname, quiet=False)
 
             # crop & save to tmp/ if bounding box
@@ -57,7 +64,8 @@ def main():
                     os.mkdir(tempath + folder)
 
                 cropped = crop(image, b)
-                cv2.imwrite(tempath+folder+'/'+'crop_'+fname, cropped)
+                save_crop_overlay(tempath+folder+'/'+'crop_'+fname, cropped)
+                # cv2.imwrite(tempath+folder+'/'+'crop_'+fname, cropped)
                 # print(tempath+folder+'/'+'crop_'+fname)
 
             # otherwise save original to reject/ for manual labelling

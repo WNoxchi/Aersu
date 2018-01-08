@@ -10,6 +10,15 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     """
     Runs RetinaNet detection on image, drawing bounding-boxes around
     detections.
+
+    Mode='SS': SemiSupervised
+        Will display top 5 predictions to choose from, and returns the chosen
+        bounding box. 'q': Quit. '0' signals reject image for manual labelling.
+
+    Mode='Auto' or 'US': Automatic
+        Will return top scoring prediction above threshold.
+        Automatically signals for image to be rejected for manual labelling
+        if score is below threshold.
     """
     # copy image to draw on
     draw = image.copy()
@@ -167,6 +176,11 @@ def crop(image, bbox):
     crop = image.copy()
     return crop[p1[1]:p2[1], p1[0]:p2[0]]
 
+def save_crop_overlay(fpath, image):
+    """
+    Saves image to fpath by overlaying it on a black background. Dimensions are
+    a square of length: longest side of image.
+    """
 
 
 
