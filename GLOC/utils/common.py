@@ -1,4 +1,4 @@
-# Wayne H Nixalo -- 2018-Jan-03 02:38
+# Wayne H Nixalo -- 2018-Jan-03 02:38 / 2018-Jan-07 21:47
 # common utilities
 import cv2
 import numpy as np
@@ -176,13 +176,36 @@ def crop(image, bbox):
     crop = image.copy()
     return crop[p1[1]:p2[1], p1[0]:p2[0]]
 
-def save_crop_overlay(fpath, image):
+# 2018-Jan-07 21:46
+# overlay: http://stackoverflow.com/a/14102014/627517
+# via: https://sourcegraph.com/github.com/lexfridman/boring-detector@master/-/blob/boring_common.py#L60
+def overlay_image(λ_img, s_img, x_offset=0, y_offset=0):
     """
-    Saves image to fpath by overlaying it on a black background. Dimensions are
-    a square of length: longest side of image.
+    Overlays foreground image `s_img` atop background image `λ_img` adjusted by
+    x_- & y_offset.
+
+    Returns: overlayed image (ndarray)
     """
+    assert y_offset + s_img.shape[0] <= λ_img.shape[0]
+    assert x_offset + s_img.shape[1] <= λ_img.shape[1]
 
+    λ_img = λ_img.copy()
 
+    # if an alpha-channel exists in fg-image: remove it
+    if s_img.shape[-1] == 4:
+        for c in range(0, 3):
+            λ_img[y_offset:y_offset+s_img.shape[0],
+                  x_offset:x_offset+s_img.shape[1], c] = (
+                                s_img[:,:,c] * (s_img[:,:,3]/255.) +
+                                λ_img[y_offset:y_offset+s_img.shape[0],
+                                      x_offset:x_offset+s_img.shape[1], c] *
+                                (1. - s_img[:,:,3]/255.))
+    else:
+        # no alpha-channel:
+        λ_img[y_offset:y_offset+s_img.shape[0],
+              x_offset:x_offset+s_img.shape[1]] = s_img
+
+    return λ_img
 
 
 
