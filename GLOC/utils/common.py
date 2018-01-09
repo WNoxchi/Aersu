@@ -51,7 +51,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
             # shift color
             c = c_shift(c=c, n=n) if idx > 0 else c
 
-            # draw bounding box & label-index
+            # draw bounding box & label-index | λ_wd: line-width
             λ_wd = 2 if idx > 0 else 4
             cv2.rectangle(draw, (b[0], b[1]), (b[2], b[3]), c, λ_wd)
             caption = f'{idx+1}'
