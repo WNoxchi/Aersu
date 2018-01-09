@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from keras_retinanet.utils.image import preprocess_image, resize_image
+from fastai_osx.dataset import ImageClassifierData
 import time
 
 def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
@@ -104,6 +105,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     # UnSupervised/Automatic Mode
     # automatically pull highest-confidence bounding box
     else:
+        print(scores[0])
         if scores[0] >= threshold:
             b = detections[0, 0, :4].astype(int)
         else:
@@ -207,7 +209,24 @@ def overlay_image(λ_img, s_img, x_offset=0, y_offset=0):
 
     return λ_img
 
+def load_dummy(fpath=None):
+    """
+    Returns a single image & label from the dataset, for use as a dummy
+    training set to initalize the Fast.ai array dataloader.
+    """
+    assert type(fpath) == str
+    train_dat = cv2.imread(fpath)
+    train_dat = cv2.cvtColor(train_dat, cv2.COLOR_BGR2RGB)
+    return np.array([train_dat]), np.array([1])
 
+# function to update FastAI dataloader with screengrab
+def load_test_image(PATH, image=None, train_dat=None, valid_dat=None, classes=[0,1], tfms=None):
+    """
+    Returns a FastAI dataloader with a single image as its test set.
+    """
+    test_dat = np.array([image]) if type(image) == np.ndarray else None
+    return ImageClassifierData.from_arrays(PATH, train_dat, valid_dat, bs=1,
+                                           tfms=tfms, classes=classes, test=test_dat)
 
 ### testing crop():
 # fpath = 'data/train/006440-006548/006530.jpg'
