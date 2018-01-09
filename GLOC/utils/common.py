@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from keras_retinanet.utils.image import preprocess_image, resize_image
-from fastai_osx.dataset import ImageClassifierData
+from fastai.dataset import ImageClassifierData
 import time
 
 def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):

@@ -15,7 +15,7 @@ import keras.preprocessing.image
 from keras_retinanet.models.resnet import custom_objects
 import tensorflow as tf
 
-show_time = False
+show_time = True
 
 if show_time: t = time.time()
 # Initialize Keras (TF) RetinaNet model
@@ -47,7 +47,7 @@ w = (bbox[2] - bbox[0]) * 2 # 1348
 tfx = sz / w
 tfy = sz / h
 
-print(f'T(INITIALIZE): {time.time() - t:.2f}')
+if show_time: print(f'T(INITIALIZE): {time.time() - t:.2f}')
 
 # video analysis loop
 while True:
