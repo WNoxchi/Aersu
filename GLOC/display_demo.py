@@ -5,8 +5,8 @@
 from utils.getscreen import getScreen
 
 # FastAI imports
-from fastai_osx.model import resnet34
-from fastai_osx.conv_learner import *
+from fastai.model import resnet34
+from fastai.conv_learner import *
 
 # Common & Keras-RetinaNet imports
 from utils.common import *

@@ -1,3 +1,6 @@
+# fastai import symlink
+fastai/
+
 # archives
 *.zip
 
