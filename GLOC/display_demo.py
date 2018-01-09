@@ -15,7 +15,9 @@ import keras.preprocessing.image
 from keras_retinanet.models.resnet import custom_objects
 import tensorflow as tf
 
-t = time.time()
+show_time = False
+
+if show_time: t = time.time()
 # Initialize Keras (TF) RetinaNet model
 def get_session():
     config = tf.ConfigProto()
@@ -55,7 +57,7 @@ while True:
 
                 ### 1st STAGE: LOCATOR
 
-    t = time.time()
+    if show_time: t = time.time()
 
     # detect & crop pilot
     bounding_box = detect(in_img, threshold=0., mode='auto', model=model)
@@ -68,11 +70,11 @@ while True:
     yof = (bg.shape[0] - crop_img.shape[0])//2
     overlay = overlay_image(bg, crop_img, xof, yof)
 
-    print(f'T(STG-1): {time.time()-t:.2f}')
+    if show_time: print(f'T(STG-1): {time.time()-t:.2f}')
 
                 ### 2nd STAGE: DETECTOR
 
-    t = time.time()
+    if show_time: t = time.time()
 
     # load image into learner
     learner.set_data(load_test_image(PATH, overlay, train_dat=train_dat,
@@ -104,7 +106,7 @@ while True:
     # display image with prediction:
     cv2.imshow('GLOC Detector', out_img)
 
-    print(f'T(STG-2): {time.time()-t:.2f}')
+    if show_time: print(f'T(STG-2): {time.time()-t:.2f}')
 
     # quit signal -- 'return':13, 'esc':27, 'q':ord('q')
     k = cv2.waitKey(1) & 0xFF
