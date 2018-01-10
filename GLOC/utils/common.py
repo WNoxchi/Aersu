@@ -62,7 +62,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 3, cv2.LINE_AA)
 
             # print label indices, bounding boxes, and scores
-            print(f'{idx+1}: {score:.12f} -- {b}')
+            if not quiet: print(f'{idx+1}: {score:.12f} -- {b}')
 
         # display image boundingbox overlay
         cv2.imshow(fname, draw)
