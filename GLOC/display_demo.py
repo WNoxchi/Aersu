@@ -1,19 +1,21 @@
 # Wayne Nixalo - 2018-Jan-08 19:02 - 2018-Jan-08 23:03
 # Run Fast.ai classifiers on input data stream and display
 
-# screen grab utility
-from utils.getscreen import getScreen
+
+
+# Keras-RetinaNet imports
+import keras
+import keras.preprocessing.image
+from keras_retinanet.models.resnet import custom_objects
+import tensorflow as tf
 
 # FastAI imports
 from fastai.model import resnet34
 from fastai.conv_learner import *
 
-# Common & Keras-RetinaNet imports
+# Common Imports (GLOC)
+from utils.getscreen import getScreen
 from utils.common import *
-import keras
-import keras.preprocessing.image
-from keras_retinanet.models.resnet import custom_objects
-import tensorflow as tf
 
 show_time = True
 
@@ -41,9 +43,15 @@ learner = ConvLearner.pretrained(resnet34, data)
 learner.load('RN34_400_WD_λ0-529_00')
 
 # Darwin Retina system:
-bbox = (8,160,682,544)
-h = (bbox[3] - bbox[1]) * 2 # 768
-w = (bbox[2] - bbox[0]) * 2 # 1348
+if sys.platform[:3] == 'dar':
+    bbox = (8,160,682,544)
+    s    = 2
+# Linux/Windows Non-Retina:
+else:
+    bbox = (65,185,65+918,185+522)
+    s    = 1
+h = (bbox[3] - bbox[1]) * s # 768
+w = (bbox[2] - bbox[0]) * s # 1348
 tfx = sz / w
 tfy = sz / h
 
