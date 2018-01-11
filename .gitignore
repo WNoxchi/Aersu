@@ -3,6 +3,8 @@ fastai/
 fastai
 GLOC/fastai/
 GLOC/fastai/*
+GLOC/fastai
+fastai/*
 
 # archives
 *.zip
