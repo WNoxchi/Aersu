@@ -1,5 +1,6 @@
 # fastai import symlink
-fastai
+fastai/
+GLOC/fastai/
 
 # archives
 *.zip
