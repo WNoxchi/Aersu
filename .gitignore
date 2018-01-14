@@ -1,3 +1,7 @@
+*.ogv
+demo/
+GLOC/demo
+
 # fastai import symlink
 fastai/
 fastai
