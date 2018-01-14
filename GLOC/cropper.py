@@ -10,7 +10,6 @@ import numpy as np
 import time
 
 import tensorflow as tf
-from PIL import Image
 
 from keras_retinanet.utils.image import preprocess_image, resize_image
 from keras_retinanet.models.resnet import custom_objects
