@@ -105,7 +105,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     # UnSupervised/Automatic Mode
     # automatically pull highest-confidence bounding box
     else:
-        print(scores[0])
+        if not quiet: print(scores[0])
         if scores[0] >= threshold:
             b = detections[0, 0, :4].astype(int)
         else:
