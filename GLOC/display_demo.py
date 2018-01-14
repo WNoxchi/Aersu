@@ -61,7 +61,7 @@ if show_time: print(f'T(INITIALIZE): {time.time() - t:.2f}')
 while True:
     # get & resize screengrab
     in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
-    in_img = cv2.cvtColor(in_img, cv2.COLOR_BGRA2RGB)
+    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGB)
 
                 ### 1st STAGE: LOCATOR
 
@@ -97,8 +97,8 @@ while True:
     # format prediction
     # prediction =
 
-    # overlay prediction on copy of image. OpenCV uses BGR so convert for display
-    out_img = cv2.cvtColor(in_img, cv2.COLOR_RGB2BGR)
+    # overlay prediction on copy of image
+    out_img = in_img
 
     # draw bounding box:
     b = bounding_box
@@ -106,10 +106,10 @@ while True:
 
     # black outline text:
     cv2.putText(out_img, f'{prediction}', (20, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 3, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 4, cv2.LINE_AA)
     # white inline text:
     cv2.putText(out_img, f'{prediction}', (20, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 2, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 1, cv2.LINE_AA)
 
     # display image with prediction:
     cv2.imshow('GLOC Detector', out_img)
