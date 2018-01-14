@@ -109,7 +109,7 @@ while True:
     # overlay prediction on copy of image. OpenCV uses BGR so convert for display
     # out_img = cv2.cvtColor(in_img, cv2.COLOR_RGB2BGR)
     # XXX use fullsize for out
-    out_img = img if fullsize_out else cv2.cvtColor(in_img)
+    out_img = img if fullsize_out else in_img
 
     # draw bounding box:
     b = bounding_box
