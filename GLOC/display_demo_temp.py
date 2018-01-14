@@ -63,13 +63,10 @@ while True:
     # in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
     # XXX keep copy of fullsize image
     img = np.asarray(getScreen(bbox=bbox))
-    in_img = cv2.resize(img, None, fx=tfx, fy=tfy)
+    in_img = cv2.resize(img)
 
-    # in_img = cv2.cvtColor(in_img, cv2.COLOR_BGRA2RGB)
-    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGB)
-
-    cv2.imshow('in_img', in_img)
-    cv2.imshow('img', img)
+    # in_img = cv2.cvtColor(in_img, cv2.COLOR_BGRA2RGB) # NOTE: bgr2rgb cvt unnec
+    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGR)
 
                 ### 1st STAGE: LOCATOR
 
@@ -102,27 +99,30 @@ while True:
     # process prediction
     prediction = np.mean(np.exp(log_preds), 0)[0] # = [[pred_0, pred_1]][0]
 
-    # format prediction
+    # format prediction # TODO
     # prediction =
 
     # overlay prediction on copy of image. OpenCV uses BGR so convert for display
-    out_img = cv2.cvtColor(in_img, cv2.COLOR_RGB2BGR)
-    # XXX use fullsize image for out # NOTE: is my color conversion notneeded?
-    # out_img = img
+    # out_img = cv2.cvtColor(in_img, cv2.COLOR_RGB2BGR)
+    # XXX use fullsize for out
+    out_img = img
 
     # draw bounding box:
     b = bounding_box
+    # XXX upscale bounding box
+    b = [int(c/tfx) if i % 2 == 0 else int(c/tfy) for i,c in enumerate(b)]
+
     cv2.rectangle(out_img, (b[0], b[1]), (b[2], b[3]), (255,0,0), 3)
 
     # black outline text:
     cv2.putText(out_img, f'{prediction}', (20, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 3, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 4, cv2.LINE_AA)
     # white inline text:
     cv2.putText(out_img, f'{prediction}', (20, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 2, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 1, cv2.LINE_AA)
 
     # display image with prediction:
-    # cv2.imshow('GLOC Detector', out_img)
+    cv2.imshow('GLOC Detector', out_img)
 
     if show_time: print(f'T(STG-2): {time.time()-t:.2f}')
 
