@@ -18,6 +18,7 @@ from utils.getscreen import getScreen
 from utils.common import *
 
 show_time = True
+fullsize_out = True
 
 if show_time: t = time.time()
 # Initialize Keras (TF) RetinaNet model
@@ -60,8 +61,11 @@ if show_time: print(f'T(INITIALIZE): {time.time() - t:.2f}')
 # video analysis loop
 while True:
     # get & resize screengrab
-    in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
-    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGB)
+    if fullsize_out:
+        img = np.asarray(getScreen(bbox=bbox))
+        in_img = cv2.resize(img, None, fx=tfx, fy=tfy)
+    else:
+        in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
 
                 ### 1st STAGE: LOCATOR
 
@@ -98,10 +102,12 @@ while True:
     # prediction =
 
     # overlay prediction on copy of image
-    out_img = in_img
+    out_img = img if fullsize_out else in_img
 
     # draw bounding box:
     b = bounding_box
+    if fullsize_out:
+        b = [int(c/tfx) if i % 2 == 0 else int(c/tfy) for i,c in enumerate(b)]
     cv2.rectangle(out_img, (b[0], b[1]), (b[2], b[3]), (255,0,0), 3)
 
     # black outline text:
