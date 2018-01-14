@@ -1,3 +1,5 @@
+# this script is an example of detecting pilotswith RetinaNet.
+# It has been implemented multiple times in some Notebooks.
 
 import keras
 import keras.preprocessing.image
