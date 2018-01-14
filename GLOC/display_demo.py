@@ -66,6 +66,7 @@ while True:
         in_img = cv2.resize(img, None, fx=tfx, fy=tfy)
     else:
         in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
+    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGB2RGBA)
 
                 ### 1st STAGE: LOCATOR
 
