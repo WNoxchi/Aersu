@@ -66,7 +66,7 @@ while True:
     in_img = cv2.resize(img, None, fx=tfx, fy=tfy)
 
     # in_img = cv2.cvtColor(in_img, cv2.COLOR_BGRA2RGB) # NOTE: bgr2rgb cvt unnec
-    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGR)
+    in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGB)
 
                 ### 1st STAGE: LOCATOR
 
