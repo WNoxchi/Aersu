@@ -63,7 +63,7 @@ while True:
     # in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
     # XXX keep copy of fullsize image
     img = np.asarray(getScreen(bbox=bbox))
-    in_img = cv2.resize(img)
+    in_img = cv2.resize(img, None, fx=tfx, fy=tfy))
 
     # in_img = cv2.cvtColor(in_img, cv2.COLOR_BGRA2RGB) # NOTE: bgr2rgb cvt unnec
     in_img = cv2.cvtColor(in_img, cv2.COLOR_RGBA2RGR)
