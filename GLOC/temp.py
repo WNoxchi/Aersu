@@ -1,3 +1,15 @@
+# 2018-Jan-15 00:55
+import os
+import pandas as pd
+interstage_csvs = [cf for cf in os.listdir('data/') if 'interstage_labels-' in cf]
+interstage_csvs.sort()
+last_csv = pd.read_csv('data/' + max(interstage_csvs))
+last_fpath = last_csv['id'][-1]
+
+last_csv['id'].iloc[-1]
+
+
+
 # 2018-Jan-14 22:25
 # more playing with arrays
 
@@ -14,6 +26,8 @@ array
 #  [80, 81, 82, 83],
 #  [90, 91, 92, 93]]
 
+array[5] = np.array(array[5])
+array
 array[0]
 
 # Transpose
