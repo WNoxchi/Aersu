@@ -233,9 +233,10 @@ def load_test_image(PATH, image=None, train_dat=None, valid_dat=None, classes=[0
 def bbx_to_DataFrame(fnames,bboxs):
     """
     Returns a Pandas DataFrame: id,x1,y1,x2,y2 built from an array of filenames
-    and their bounding box coordinates as an ndarray.
+    and their bounding box coordinates as a transposed ndarray.
     """
-    assert type(bboxs) == np.ndarray, f'`bboxs` must be of type np.ndarray to allow slicing.'
+    # Transpose array: Nx4 --> 4xN
+    bboxs = np.array([[r[cdx] for r in bboxs] for cdx in range(len(bboxs[0]))]) # cdx: column index; r: row
 
     df = DataFrame(fnames, columns=['id']) # also: DataFrame({'id':fnames})
     df.insert(1, 'x1', bboxs[0,:])         # NOTE: Pandas currently automatically
