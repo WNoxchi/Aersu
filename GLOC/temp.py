@@ -1,3 +1,45 @@
+# 2018-Jan-14 22:25
+# more playing with arrays
+
+array = [[i+j*10 for i in range(4)] for j in range(10)]
+array
+# [[0, 1, 2, 3],
+#  [10, 11, 12, 13],
+#  [20, 21, 22, 23],
+#  [30, 31, 32, 33],
+#  [40, 41, 42, 43],
+#  [50, 51, 52, 53],
+#  [60, 61, 62, 63],
+#  [70, 71, 72, 73],
+#  [80, 81, 82, 83],
+#  [90, 91, 92, 93]]
+
+array[0]
+
+# Transpose
+arrayT = [[r[cdx] for r in array] for cdx in range(len(array[0]))]
+arrayT
+# [[0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+#  [1, 11, 21, 31, 41, 51, 61, 71, 81, 91],
+#  [2, 12, 22, 32, 42, 52, 62, 72, 82, 92],
+#  [3, 13, 23, 33, 43, 53, 63, 73, 83, 93]]
+
+import numpy as np
+np.array(arrayT)[1,:]
+# array([ 1, 11, 21, 31, 41, 51, 61, 71, 81, 91])
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 2018-Jan-14 21:59
 # learning about Pandas and datatypes. It looks like you can't save a column
 # with array elements and expect to read them back as ints or floats: they come
