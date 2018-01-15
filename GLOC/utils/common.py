@@ -6,6 +6,7 @@ from PIL import Image
 from keras_retinanet.utils.image import preprocess_image, resize_image
 from fastai.dataset import ImageClassifierData
 import time
+from pandas import DataFrame
 
 def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     """
@@ -227,6 +228,30 @@ def load_test_image(PATH, image=None, train_dat=None, valid_dat=None, classes=[0
     test_dat = np.array([image]) if type(image) == np.ndarray else None
     return ImageClassifierData.from_arrays(PATH, train_dat, valid_dat, bs=1,
                                            tfms=tfms, classes=classes, test=test_dat)
+
+# Wayne Nixalo -- 2018-Jan-14 21:43
+def bbx_to_DataFrame(fnames,bboxs):
+    """
+    Returns a Pandas DataFrame: id,x1,y1,x2,y2 built from an array of filenames
+    and their bounding box coordinates as an ndarray.
+    """
+    assert type(bboxs) == np.ndarray, f'`bboxs` must be of type np.ndarray to allow slicing.'
+
+    df = DataFrame(fnames, columns=['id']) # also: DataFrame({'id':fnames})
+    df.insert(1, 'x1', bboxs[0,:])         # NOTE: Pandas currently automatically
+    df.insert(2, 'y1', bboxs[1,:])         #       sorts columns alphabetically
+    df.insert(3, 'x2', bboxs[2,:])         #       so manual inserts nec.
+    df.insert(4, 'y2', bboxs[3,:])
+
+    return df
+
+    # NOTE: these will save as 64-bit integers. I deffinitely don't need that
+    #       kind of precision, but I figure it'll have a infinitisimal affect
+    #       on speed.
+
+
+
+
 
 ### testing crop():
 # fpath = 'data/train/006440-006548/006530.jpg'
