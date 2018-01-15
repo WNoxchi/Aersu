@@ -1,40 +1,166 @@
-# screen grab utility
-from utils.getscreen import getScreen
+# 2018-Jan-14 21:59
+# learning about Pandas and datatypes. It looks like you can't save a column
+# with array elements and expect to read them back as ints or floats: they come
+# back as strings.
 
-# FastAI imports
-from fastai_osx.model import resnet34
-from fastai_osx.conv_learner import *
+import pandas as pd
 
-# Load dummy training set to init dataloader
-dummy_fpath = 'data/train/000000-000412/000000.jpg'
-train_dat = cv2.imread(dummy_fpath)
-train_dat = cv2.cvtColor(train_dat, cv2.COLOR_BGR2RGB)
-train_dat = np.array([train_dat]), np.array([0])
-valid_dat  = train_dat
-classes   = [0,1]
+df = pd.read_csv('data/interstage_labels.csv')
 
-# Darwin Retina system:
-bbox = (8,160,682,544)
-h = (bbox[3] - bbox[1]) * 2 # 768
-w = (bbox[2] - bbox[0]) * 2 # 1348
-tfx = 400 / w
-tfy = 400 / h
+df['bounding box']
 
-img = getScreen(bbox=bbox)
-img = np.asarray(img)
-img = cv2.resize(img, None, fx=tfx, fy=tfy)
-img2= img[:,:,:3]
+x = df['bounding box'][0]
+
+x
+
+type(x)
+
+df['bounding box'][0].values
+
+x = [[i for i in range(5)]]
+df = pd.DataFrame({'x':x})
+df.values
+df
 
 
-# in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
+df = pd.read_csv('data/interstage_labels.csv')['bounding box']
 
-cv2.imshow('1', img)
-cv2.imshow('2', img2)
-cv2.waitKey(1)
-time.sleep(5)
-cv2.destroyAllWindows()
+np.asarray(df[0])
+np.array(df[0])
 
-print(img.shape)
+
+# x = [[i for i in range(5)], 0]
+x = [i for i in range(5)]
+x.append([1,2,3])
+df = pd.DataFrame({'x':x})
+df.to_csv('tempcsv.csv', index=False)
+
+df = pd.read_csv('tempcsv.csv')
+
+for i in df['x']:
+    print(i, type(i))
+
+
+pd.DataFrame({('a', 'b'): {('A', 'B'): 1, ('A', 'C'): 2},
+               ('a', 'a'): {('A', 'C'): 3, ('A', 'B'): 4},
+               ('a', 'c'): {('A', 'B'): 5, ('A', 'C'): 6},
+               ('b', 'a'): {('A', 'C'): 7, ('A', 'B'): 8},
+               ('b', 'b'): {('A', 'D'): 9, ('A', 'B'): 10}}).values
+
+
+x1,y1,x2,y2 =
+
+x1,y1,x2,y2 = [[i+j*10 for i in range(10)] for j in range(4)]
+x1
+y1
+
+# df = pd.DataFrame({'x1':x, 'y1':y, 'x2':w, 'y2':z})
+
+
+arr = np.array([[i+j*10 for i in range(10)] for j in range(4)])
+arr
+
+arr[1,:]
+
+
+df = pd.DataFrame(data=x1,columns=['x1'])
+df.insert(1,'y1',y1)
+df.insert(2,'x2',x2)
+df.insert(3,'y2',y2)
+df
+df.to_csv('tempcsv.csv', index=False)
+df = pd.read_csv('tempcsv.csv')
+df.values
+df['x1'][0].dtype
+int(df['x1'][0])
+
+
+np.int64 == np.dtype('int64')
+int == np.dtype('int64')
+
+
+
+
+a = np.arange(10).reshape(2,5)
+b = np.arange(10, 20).reshape(2,5)
+df = pd.DataFrame({'foo':[42,51], 'arr':[a,b]})
+
+df.to_csv('tempcsv.csv',index=False)
+df=pd.read_csv('tempcsv.csv')
+
+df.values
+
+
+df['foo']
+df['arr']
+
+
+df.columns
+
+
+
+Out[10]:
+                                            arr  foo
+0            [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]   42
+1  [[10, 11, 12, 13, 14], [15, 16, 17, 18, 19]]   51
+
+
+
+
+
+
+
+
+
+
+df = pd.read_csv('data/labels.csv')
+
+df['gloc'][0].dtype
+
+
+import numpy as np
+print(np.array([i for i in range(5)]))
+
+
+
+
+# # screen grab utility
+# from utils.getscreen import getScreen
+#
+# # FastAI imports
+# from fastai_osx.model import resnet34
+# from fastai_osx.conv_learner import *
+#
+# # Load dummy training set to init dataloader
+# dummy_fpath = 'data/train/000000-000412/000000.jpg'
+# train_dat = cv2.imread(dummy_fpath)
+# train_dat = cv2.cvtColor(train_dat, cv2.COLOR_BGR2RGB)
+# train_dat = np.array([train_dat]), np.array([0])
+# valid_dat  = train_dat
+# classes   = [0,1]
+#
+# # Darwin Retina system:
+# bbox = (8,160,682,544)
+# h = (bbox[3] - bbox[1]) * 2 # 768
+# w = (bbox[2] - bbox[0]) * 2 # 1348
+# tfx = 400 / w
+# tfy = 400 / h
+#
+# img = getScreen(bbox=bbox)
+# img = np.asarray(img)
+# img = cv2.resize(img, None, fx=tfx, fy=tfy)
+# img2= img[:,:,:3]
+#
+#
+# # in_img = cv2.resize(np.asarray(getScreen(bbox=bbox)), None, fx=tfx, fy=tfy)
+#
+# cv2.imshow('1', img)
+# cv2.imshow('2', img2)
+# cv2.waitKey(1)
+# time.sleep(5)
+# cv2.destroyAllWindows()
+#
+# print(img.shape)
 
 # print(type(in_img))
 
