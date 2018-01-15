@@ -1,4 +1,5 @@
-# Wayne Nixalo - 2018-Jan-02 23:15 / 2018-Jan-03 12:59
+# Wayne Nixalo - 2018-Jan-02 23:15 / 2018-Jan-03 12:59 / 2018-Jan-14 23:45
+#                2018-Jan-15 10:44
 
 ### IMPORTS
 import keras
@@ -9,6 +10,7 @@ import os
 import numpy as np
 import time
 from pandas import DataFrame
+import pandas as pd
 
 import tensorflow as tf
 
@@ -44,22 +46,49 @@ def main():
 
     tpath = 'data/train/'
     tempath = 'data/tmp/'
-    rejectpath = tempath + 'reject/'
+    # rejectpath = tempath + 'reject/'
     folders = os.listdir(tpath)
     folders.sort()  # subfolders are numerically ordered
+    if '.DS_Store' in folders:
+        folders.remove('.DS_Store')
 
-    # create destination folders if needed
-    for path in tempath, rejectpath:
-        if not os.path.exists(path):
-            os.mkdir(path)
+    # create destination folder if needed
+    if not os.path.exists(tempath):
+        os.mkdir(tempath)
+        clean_start = True
+        last_fname = -1
+    else:
+        # find starting point if quit before
+        #NOTE: requires deletion of CSVs if tmp/ data deleted! otherwise will skip
+        clean_start = False
+        interstage_csvs = [csv_fname for csv_fname in os.listdir('data/') if 'interstage_labels-' in csv_fname]
+        interstage_csvs.sort()
+        last_csv = pd.read_csv('data/' + max(interstage_csvs))
+        # find last recorded filename
+        last_fpath = last_csv['id'].iloc[-1]
+        last_folder, last_fname = last_fpath.split('/')
+        # remove all folders before last
+        for idx,folder in enumerate(folders):
+            if folder < last_folder:
+                folders.remove(folder)
 
     for folder in folders:
         # get all filenames
         fnames = os.listdir(tpath + folder)
         fnames.sort()
+        # remove all fnames before last in 1st folder if not starting fresh
+        removals = []
+        if not clean_start and folder == last_folder:
+            for idx,fname in enumerate(fnames):
+                if fname <= last_fname:
+                    removals.append(fname)
+        for rem in removals:
+            fnames.remove(rem)
 
         # run detection on each file
         for fname in fnames:
+            print(f'Displaying: {fname}')
+
             fpath = tpath+folder+'/'+fname
             # image = Image.open(fpath)
             image = cv2.imread(fpath)
@@ -67,37 +96,36 @@ def main():
             b = detect(image=image, model=model, mode='ss', fname=fname, quiet=False)
 
             # crop & save to tmp/ if bounding box
-            if type(b)==np.ndarray:
+            if type(b)==np.ndarray or type(b)==list:
                 # add folder if not there
                 if folder not in os.listdir(tempath):
                     os.mkdir(tempath + folder)
                 crop_img = crop(image, b)
+                crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
                 bg_img  = image.copy()
                 bg_img[:] = 0
                 xof = (bg_img.shape[1] - crop_img.shape[1])//2
                 yof = (bg_img.shape[0] - crop_img.shape[0])//2
                 overlay = overlay_image(bg_img, crop_img, x_offset=xof, y_offset=yof)
                 cv2.imwrite(tempath+folder+'/'+fname, overlay)
-                # b = [int(i) for i in b]
 
-            # otherwise save original to reject/ for manual labelling
-            elif type(b)==int:
-                # Exit Signal
-                if b == -1:
-                    break
-                # add folder if not there
-                if folder not in os.listdir(rejectpath):
-                    os.mkdir(rejectpath + folder)
-                cv2.imwrite(rejectpath+folder+'/'+fname, image)
-                b = np.array([0,0,0,0])
-
-
-            # record label: [file-id, bounding_box]
-            if not (type(b)==int and b == -1):
+                # record label: [file-id, bounding_box]
                 interstage_ids.append(folder+'/'+fname)
-                interstage_bbx.append(b)
+                interstage_bbx.append(b)   # list or ndarray is fine for transposing below
+
+            elif type(b)==int and b == -1:
+                # Exit Signal
+                break
+
+            else:
+                # This should NEVER happen
+                print('Woah. Something went wrong.\n`Bounding Box`: {b}')
+
+            # only update end fname if all went smoothly
+            new_last_fname = fname
 
         if type(b)== int and b == -1:
+            # cascading Exit Signal
             break
 
         # NOTE: how is this going to screw up RetinaNet? It's predicting
@@ -106,13 +134,11 @@ def main():
         #       for there being only 1 output bounding box and NO 'classes' ?
 
     # write interstage labels CSV file
-    # print(interstage_ids)
-    # print(interstage_bbx)
-    # print(type(interstage_bbx))
-    # print(type(interstage_bbx[0]), interstage_bbx[0])
-
-    df = bbx_to_DataFrame(interstage_ids, interstage_bbx)
-    df.to_csv('data/interstage_labels.csv', index=False)
+    if len(interstage_ids) > 0:
+        start = int(last_fname.split('.')[0])+1 if not clean_start else 0
+        end   = int(new_last_fname.split('.')[0])
+        df = bbx_to_DataFrame(interstage_ids, interstage_bbx)
+        df.to_csv(f'data/interstage_labels-{start:0=6d}-{end:0=6d}.csv', index=False)
 
     return
 
