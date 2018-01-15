@@ -24,7 +24,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     """
     # copy image to draw on
     draw = image.copy()
-    # draw = cv2.cvtColor(draw, cv2.COLOR_BGR2RGB)
+    draw = cv2.cvtColor(draw, cv2.COLOR_BGR2RGB)
 
     # preprocess image for neural network
     image = preprocess_image(image)
@@ -66,7 +66,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
             if not quiet: print(f'{idx+1}: {score:.12f} -- {b}')
 
         # display image boundingbox overlay
-        cv2.imshow(fname, draw)
+        cv2.imshow('', draw)    # if name changes, OpenCV will open new windows
         cv2.waitKey(1)
         time.sleep(1e-2)
 
@@ -75,7 +75,7 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
         while True:
             inp = input("Index: ")
             if type(inp) == str and inp.isdigit():
-                if int(inp) > 0 and int(inp) < 5:
+                if int(inp) > 0 and int(inp) <= 5:
                     inp = int(inp)
                     break
                 elif int(inp) == 0:
@@ -84,22 +84,38 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
             # enter letter to reload window
             elif type(inp) == str and not inp.isdigit():
                 cv2.destroyAllWindows()
-                cv2.imshow(fname, draw)
+                cv2.imshow('', draw)
                 cv2.waitKey(1)
                 time.sleep(1e-2)
 
                 if inp == 'q':
                     print('Exit Signal Entered: Quitting.')
+                    cv2.destroyAllWindows()
                     return -1
 
-        # close image window
-        cv2.destroyAllWindows()
-
-        # return chosen bounding box OR reject-flag
+        # return chosen bounding box OR manually specify
         if inp == 0:
             if not quiet:
                 print(f'{fname} rejected: manual labelling')
-            return inp
+            x1 = None
+            while x1 == None:
+                x1 = input("x1: ")
+                y1 = input("y1: ")
+                x2 = input("x2: ")
+                y2 = input("y2: ")
+                # check Exit Signal
+                if 'q' in [x1,y1,x2,y2]:
+                    # cv2.destroyAllWindows()
+                    return -1
+                # check Valid Input
+                if False in [i.isdigit() for i in [x1,y1,x2,y2]]:
+                    x1 = None
+            # cv2.destroyAllWindows()
+            return [int(i) for i in [x1,y1,x2,y2]]
+            # return inp
+
+        # close image window
+        # cv2.destroyAllWindows()
 
         b = detections[0, inp-1, :4].astype(int)
 
