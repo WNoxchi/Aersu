@@ -43,6 +43,7 @@ def main():
 
     interstage_ids = []
     interstage_bbx = []
+    # interstage_labels = []
 
     tpath = 'data/train/'
     tempath = 'data/tmp/'
@@ -68,9 +69,12 @@ def main():
         last_fpath = last_csv['id'].iloc[-1]
         last_folder, last_fname = last_fpath.split('/')
         # remove all folders before last
-        for idx,folder in enumerate(folders):
+        removals = []
+        for folder in folders:
             if folder < last_folder:
-                folders.remove(folder)
+                removals.append(folder)
+        for rem in removals:
+            folders.remove(rem)
 
     for folder in folders:
         # get all filenames
@@ -79,7 +83,7 @@ def main():
         # remove all fnames before last in 1st folder if not starting fresh
         removals = []
         if not clean_start and folder == last_folder:
-            for idx,fname in enumerate(fnames):
+            for fname in fnames:
                 if fname <= last_fname:
                     removals.append(fname)
         for rem in removals:
@@ -112,6 +116,7 @@ def main():
                 # record label: [file-id, bounding_box]
                 interstage_ids.append(folder+'/'+fname)
                 interstage_bbx.append(b)   # list or ndarray is fine for transposing below
+                # interstage_labels.append(fpath)
 
             elif type(b)==int and b == -1:
                 # Exit Signal
@@ -137,7 +142,19 @@ def main():
     if len(interstage_ids) > 0:
         start = int(last_fname.split('.')[0])+1 if not clean_start else 0
         end   = int(new_last_fname.split('.')[0])
+        # cut '.jpg' suffix from ids
+        interstage_ids = [fpath.split('.jpg')[0] for fpath in interstage_ids]
+        # load training set labels to extract GLOC classifications
+        labels_csv = pd.read_csv('data/labels.csv')
+        # build list of indices
+        label_idxs = [np.where(labels_csv['id'] == fpath) for fpath in interstage_ids]
+        label_idxs = [item[0][0] for item in label_idxs]
+        # extract labels from training set labels csv
+        interstage_labels = [labels_csv.iloc[row]['gloc'] for row in label_idxs]
+        # build interstage labels csv
         df = bbx_to_DataFrame(interstage_ids, interstage_bbx)
+        df.insert(1, 'gloc', interstage_labels)
+        # write out interstage labels csv
         df.to_csv(f'data/interstage_labels-{start:0=6d}-{end:0=6d}.csv', index=False)
 
     return

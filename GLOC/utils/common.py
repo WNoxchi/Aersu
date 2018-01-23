@@ -6,7 +6,8 @@ from PIL import Image
 from keras_retinanet.utils.image import preprocess_image, resize_image
 from fastai.dataset import ImageClassifierData
 import time
-from pandas import DataFrame
+import pandas as pd
+import os
 
 def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
     """
@@ -254,7 +255,7 @@ def bbx_to_DataFrame(fnames,bboxs):
     # Transpose array: Nx4 --> 4xN
     bboxs = np.array([[r[cdx] for r in bboxs] for cdx in range(len(bboxs[0]))]) # cdx: column index; r: row
 
-    df = DataFrame(fnames, columns=['id']) # also: DataFrame({'id':fnames})
+    df = pd.DataFrame(fnames, columns=['id']) # also: DataFrame({'id':fnames})
     df.insert(1, 'x1', bboxs[0,:])         # NOTE: Pandas currently automatically
     df.insert(2, 'y1', bboxs[1,:])         #       sorts columns alphabetically
     df.insert(3, 'x2', bboxs[2,:])         #       so manual inserts nec.
@@ -265,6 +266,21 @@ def bbx_to_DataFrame(fnames,bboxs):
     # NOTE: these will save as 64-bit integers. I deffinitely don't need that
     #       kind of precision, but I figure it'll have a infinitisimal affect
     #       on speed.
+
+# Wayne Nixalo - 2018-Jan-19 15:19
+def csv_stitcher(path='data/', csv_name=''):
+    """
+    Concatenates all numbered CSVs together - in order - into one CSV file.
+    """
+    # gather list of CSVs
+    csvs = [fname for fname in os.listdir(path) if csv_name in fname and '.csv' in fname]
+    csvs.sort()
+    # init out DataFrame with 1st CSV
+    out_df = pd.read_csv(path + csvs[0])
+    # append all other CSVS to end
+    for i in range(1, len(csvs)):
+        out_df = out_df.append(pd.read_csv(path + csvs[i]))
+    return out_df
 
 
 

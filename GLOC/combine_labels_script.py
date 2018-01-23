@@ -6,7 +6,7 @@ import numpy as np
 from glob import glob
 
 # list all .csv's
-g = glob('data/*.csv')
+g = glob('data/labels/*.csv')
 # sort indices by starting image index
 temp = sorted([[i,e.split('_')[1].split('-')[0]] for i,e in enumerate(g)], key = lambda x: int(x[1]))
 # sort csv list by index
