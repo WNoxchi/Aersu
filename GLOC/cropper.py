@@ -84,10 +84,13 @@ def main():
         removals = []
         if not clean_start and folder == last_folder:
             for fname in fnames:
-                if fname <= last_fname:
+                # print(f'{fname} <= {last_fname}: {fname <= last_fname}')
+                if fname <= last_fname+'.jpg':
                     removals.append(fname)
         for rem in removals:
             fnames.remove(rem)
+
+        b = None # NOTE: bandaid soln: ref before asn error if fnames empty
 
         # run detection on each file
         for fname in fnames:
