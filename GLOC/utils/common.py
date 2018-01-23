@@ -84,15 +84,15 @@ def detect(image, threshold=0.5, mode='ss', fname='', model=None, quiet=True):
                     break
             # enter letter to reload window
             elif type(inp) == str and not inp.isdigit():
-                cv2.destroyAllWindows()
-                cv2.imshow('', draw)
-                cv2.waitKey(1)
-                time.sleep(1e-2)
-
                 if inp == 'q':
                     print('Exit Signal Entered: Quitting.')
                     cv2.destroyAllWindows()
                     return -1
+                else:
+                    cv2.destroyAllWindows()
+                    cv2.imshow('', draw)
+                    cv2.waitKey(10)
+                    time.sleep(1e-2)
 
         # return chosen bounding box OR manually specify
         if inp == 0:
