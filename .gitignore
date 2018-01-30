@@ -1,6 +1,7 @@
 *.ogv
 demo/
 GLOC/demo
+GLOC/display_demo.py.save
 
 # fastai import symlink
 fastai/
