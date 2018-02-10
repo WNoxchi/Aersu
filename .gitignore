@@ -2,6 +2,7 @@
 demo/
 GLOC/demo
 GLOC/display_demo.py.save
+*.h5
 
 # fastai import symlink
 fastai/
