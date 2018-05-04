@@ -23,6 +23,14 @@ def get_leaf(path):
     """returns the last element of a path"""
     return str(path).split('/')[-1]
 
+def get_random_sample(df, p):
+    """Returns a uniform random sample of dataset indices."""
+    if p > 1: return df.sample(n=int(p))
+    else: return df.sample(frac=p)
+
+## NOTE: wait.. if I'm using CSVs.. why would I even need to play w/ folders?
+##       I should rewrite this to also specify IDs so it can also create
+##       matching bounding-box datasets.
 def create_cpu_dataset(path, p=1000, subfolders='train', seed=0):
     """
         Creates a temporary sub-dataset for cpu-machine work.
