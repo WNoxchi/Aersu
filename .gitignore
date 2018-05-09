@@ -2,7 +2,6 @@ data_v1
 .tags
 .tags1
 *.ogv
-demo/
 GLOC/demo
 GLOC/display_demo.py.save
 *.h5
