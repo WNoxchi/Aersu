@@ -92,6 +92,9 @@ def main():
 
         b = None # NOTE: bandaid soln: ref before asn error if fnames empty
 
+        print(f'Detection Cropper: Enter Index of closest match, or "0" to manually specify coordinates. Enter "q" to quit.'
+              f'\nIf you are starting fresh, please ensure data/tmp/ is deleted.')
+
         # run detection on each file
         for fname in fnames:
             print(f'Displaying: {fname}')

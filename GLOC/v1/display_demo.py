@@ -27,12 +27,17 @@ def get_session():
     config.gpu_options.allow_growth = True # will this eat all GRAM?
     return tf.Session(config=config)
 
+import pdb; pdb.set_trace()
+
 keras.backend.tensorflow_backend.set_session(get_session())
 model = keras.models.load_model('data/retinanet-model/resnet50_coco_best_v1.2.2.h5',
                                 custom_objects=custom_objects)
 
 # Load dummy training set to init Fast.ai dataloader
-train_dat = load_dummy(fpath='data/train/000000-000412/000000.jpg')
+first_subfolder = os.listdir('data/train')
+first_subfolder.sort()
+first_subfolder = first_subfolder[0]
+train_dat = load_dummy(fpath=f'data/train/000000-000412/000000.jpg')
 valid_dat = train_dat
 
 # Initialize FastAI (PT) Learner & load weights

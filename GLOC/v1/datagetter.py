@@ -3,8 +3,8 @@
 ################################################################################
 import numpy as np
 import cv2
-from getkey import getKey
-from getscreen import getScreen
+from utils.getkey import getKey
+from utils.getscreen import getScreen
 from time import time
 from time import sleep
 from pandas import DataFrame
@@ -50,7 +50,7 @@ def main():
     # find starting index and find/create data folder
     dpath = 'data/'
     idx = find_idx()
-    idx_last = max(0, idx - 1)
+    idx_last = max(-1, idx - 1)
 
     # record data
     print("[SPACE] for G-Lock, [Any Other Key] otherwise, [RETURN] to quit.")
