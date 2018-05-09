@@ -42,10 +42,10 @@ I don’t have a link to download the dataset. You can rebuild the dataset yours
 	- This combines the multiple CSV label files into a single master CSV which will be used by the neural net models.
 
 4. run `python name_corrector.py` in your terminal.
-	- This converts the file ids from `XX` $\rightarrow$ `000XX`
+	- This converts the file ids from `XX` --> `000XX`
 
 5. run `python directorize_fnames.py` in your terminal.
-	- This converts the file ids from `000XX` $\rightarrow$ `subdirectory/000XX`
+	- This converts the file ids from `000XX` --> `subdirectory/000XX`
 
 ### Running the GLoC Detector:
 
