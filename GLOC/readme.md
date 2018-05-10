@@ -6,7 +6,7 @@ Wayne H Nixalo
 
 ## Overview
 
-**[v1/](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1)** : version 1
+- **[`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1)  :  version 1**
   - [demo video](https://www.youtube.com/embed/9x0SjXQ3F-A)
 
 This directory is home to the current v2 GLoC Detector under active development. See [`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1) for a working demo of the previous complete version. 
