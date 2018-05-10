@@ -116,7 +116,7 @@ I wanted to document my progress as much as possible - nearly everything I encou
 
 - finetune-retinanet_attempt [01](https://github.com/WNoxchi/Aersu/blob/master/GLOC/v1/notebooks/finetune-retinanet_attempt01.ipynb)-[02](https://github.com/WNoxchi/Aersu/blob/master/GLOC/v1/notebooks/finetune-retinanet_attempt02.ipynb): I tried to finetune the RetinaNet model and failed badly. After this I experimented with just using the stock model (since it was already trained to detect "person" - which neatly intersected my trying to detect "pilot").
 
-- image_overlay-development.ipynb(https://github.com/WNoxchi/Aersu/blob/master/GLOC/v1/notebooks/image_overlay-development.ipynb): Learning how to overlap a cropped image over another image; how to create a center-crop on black. It was very late and I had too much fun with this..
+- [image_overlay-development.ipynb](https://github.com/WNoxchi/Aersu/blob/master/GLOC/v1/notebooks/image_overlay-development.ipynb): Learning how to overlap a cropped image over another image; how to create a center-crop on black. It was very late and I had too much fun with this..
 
 - [keras-retinanet-example.ipynb](https://github.com/WNoxchi/Aersu/blob/master/GLOC/v1/notebooks/keras-retinanet-example.ipynb): in order to get a feel for how to use a different framework, API, and pretrained model, I do a code along with my own images. **Note**: there are a lot of images of Chamath Palihapitiya. I was watching a [very good talk of his](https://www.youtube.com/watch?v=PMotykw0SIk) when I started the GLoC project, so I endup using a screengrab of him to test a lot of Computer Vision stuff.
 
