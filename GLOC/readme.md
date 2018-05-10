@@ -8,7 +8,9 @@ Wayne H Nixalo
 
 **[`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1)** : version 1
 
-This directory is home to the current v2 GLoC Detector under active development. See [`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1) for a working demo of the previous complete version.
+This directory is home to the current v2 GLoC Detector under active development. See [`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1) for a working demo of the previous complete version. 
+
+V1 uses a 2-Stage pipeline with a Keras/TensorFow 1st-stage Detector feeding a 2nd-Stage FastAI/PyTorch Classifier. V2 will be a single End-to-End FastAI/PyTorch Network using a Regressor Detection head and a Classification head sharing a common convolutional backbone.
 
 ---
 
