@@ -42,12 +42,33 @@ I don’t have a link to download the dataset. You can rebuild the dataset yours
 	- This combines the multiple CSV label files into a single master CSV which will be used by the neural net models.
 
 4. run `python name_corrector.py` in your terminal.
-	- This converts the file ids from `XX` --> `000XX`
+	- This converts the file ids from `XX` $\rightarrow$ `000XX`
 
 5. run `python directorize_fnames.py` in your terminal.
-	- This converts the file ids from `000XX` --> `subdirectory/000XX`
+	- This converts the file ids from `000XX` $\rightarrow$ `subdirectory/000XX`
 
 ### Running the GLoC Detector:
 
 - run `python display_demo.py`.
 **NOTE**: GLoC v1 just uses the pretrained RetinaNet model as a detector. You can download the pretrained MS COCO RetinaNet model [from this link](https://github.com/fizyr/keras-retinanet/releases/download/0.2/resnet50_coco_best_v2.0.3.h5) (from this [github repo](https://github.com/fizyr/keras-retinanet)). Make sure it is saved as `data/retinanet-model/resnet50_coco_best_v1.2.2.h5` - as that’s where `display_demo.py` will look to load the model.
+
+---
+
+## Dummy Demo
+
+To get a feel for how the GLoC Detector works, there’s a dummy version in the /demo/ folder. To get around the issue of hosting large models (the ResNet34 classifier is about 85MB and the RetinaNet detector about 150MB) there’s a script to create a pretrained ResNet34, and download the pretrained RetinaNet model. So note that you’ll be adding ~200MB to this directory if you want to run this.
+
+### Necessary packages to run the demo
+
+- clone fastai repo
+- clone keras-retinanet repo
+
+- go to fastai/ root directory
+- create a fastai environment via the environment-cpu.yml (or nix ‘-cpu’ for gpu version)
+- conda clone that as `aersu`
+- go to GLOC/ root directoy
+- update aersu environment with GLOC/’s environment.yml
+- go to keras-retinanet/ root directory
+- with ‘aersu’ environment activated run `pip install .` in terminal
+
+You should now have an environment matching the one used to make this demo. Fast.ai and Keras-Retinanet aren’t pip-installable, making this process necessary (without a docker).

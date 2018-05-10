@@ -105,6 +105,12 @@ while True:
 
     # detect & crop pilot
     bounding_box = detect(in_img, threshold=0., mode='auto', model=model)
+
+    if type(bounding_box) == int:
+        if show_time:
+            print(f'No detection')
+        continue
+
     crop_img = crop(in_img, bounding_box)
 
     # overlay crop on center of black bg (background)
