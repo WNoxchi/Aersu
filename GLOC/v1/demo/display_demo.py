@@ -89,6 +89,9 @@ tfy = sz / h
 
 if show_time: print(f'T(INITIALIZE): {time.time() - t:.2f}')
 
+# quick bugfix: count consecutive non-detections
+non_detect = 0
+
 # video analysis loop
 while True:
     # get & resize screengrab
@@ -109,7 +112,14 @@ while True:
     if type(bounding_box) == int:
         if show_time:
             print(f'No detection')
+        # bugfix: quit automatically after 4 consecutive non-detections
+        non_detect += 1
+        if non_detect >= 4:
+            print(f'4 Consecutive Non-Detections: Quitting.')
+            break
         continue
+    else:
+        non_detect = 0
 
     crop_img = crop(in_img, bounding_box)
 
