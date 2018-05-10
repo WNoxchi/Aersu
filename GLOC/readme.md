@@ -4,6 +4,14 @@
 
 Wayne H Nixalo
 
+## Overview
+
+**[`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1)** : version 1
+
+This directory is home to the current v2 GLoC Detector under active development. See [`v1/`](https://github.com/WNoxchi/Aersu/tree/master/GLOC/v1) for a working demo of the previous complete version.
+
+---
+
 ## Dataset
 
 Unpacking and formatting the raw dataset:
