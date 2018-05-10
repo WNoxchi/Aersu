@@ -5,7 +5,7 @@ from fastai.conv_learner import *
 
 def main():
 
-    PATH = Path('data')
+    PATH = Path('demo_data')
     IMG_PATH = PATH/'train'
     CSV_PATH = PATH/'labels.csv'
 

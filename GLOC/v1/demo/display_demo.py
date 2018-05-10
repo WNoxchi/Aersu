@@ -46,19 +46,19 @@ keras.backend.tensorflow_backend.set_session(get_session())
 
 # 2018-May-09 20:56 fix to bug in fizyr custom keras layer: https://github.com/fizyr/keras-retinanet/issues/407#issuecomment-382312153
 # example of fix in § 'Load RetinaNet model': https://github.com/fizyr/keras-retinanet/blob/master/examples/ResNet50RetinaNet.ipynb
-model_path = 'data/retinanet-model/resnet50_coco_best.h5'
+model_path = 'demo_data/retinanet-model/resnet50_coco_best.h5'
 # model = models.load_model(model_path, backbone_name='resnet50', convert=True)
 model = models.load_model(model_path, backbone_name='resnet50')
 
 # Get path to first file in dataset to initialize fast.ai dataloader
-first_subfolder = os.listdir('data/train')
+first_subfolder = os.listdir('demo_data/train')
 first_subfolder.sort()
 if '.DS_Store' in first_subfolder: first_subfolder.remove('.DS_Store')
 first_subfolder = first_subfolder[0]
-first_image = os.listdir('data/train/' + first_subfolder)
+first_image = os.listdir('demo_data/train/' + first_subfolder)
 first_image.sort()
 first_image = first_image[0]
-dummy_path = 'data/train/' + first_subfolder + '/' + first_image
+dummy_path = 'demo_data/train/' + first_subfolder + '/' + first_image
 
 # Load dummy training set to init Fast.ai dataloader
 train_dat = load_dummy(fpath=dummy_path)
@@ -66,7 +66,7 @@ train_dat = load_dummy(fpath=dummy_path)
 valid_dat = train_dat
 
 # Initialize FastAI (PT) Learner & load weights
-PATH = 'data/'
+PATH = 'demo_data/'
 sz = 400
 tfms = tfms_from_model(resnet34, sz, aug_tfms=transforms_side_on, max_zoom=1.2)
 data = load_test_image(PATH, train_dat=train_dat, valid_dat=valid_dat, tfms=tfms)

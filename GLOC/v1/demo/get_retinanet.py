@@ -9,11 +9,11 @@ from os import makedirs
 
 def main():
     d_link = 'https://github.com/fizyr/keras-retinanet/releases/download/0.2/resnet50_coco_best_v2.0.3.h5'
-    retnet_path = Path('data/retinanet-model/')
+    retnet_path = Path('demo_data/retinanet-model/')
     # fname = 'resnet50_coco_best_v2.0.3.h5'
     fname = 'resnet50_coco_best.h5'
     # NOTE: the authors may update their pretrained model, so to ensure this'll
-    #       work with `display_demo.py` out-of-the-box in the future, I have it 
+    #       work with `display_demo.py` out-of-the-box in the future, I have it
     #       set to this name.
 
     if not exists(retnet_path/fname):

@@ -279,7 +279,7 @@ def bbx_to_DataFrame(fnames,bboxs):
     #       on speed.
 
 # Wayne Nixalo - 2018-Jan-19 15:19
-def csv_stitcher(path='data/', csv_name=''):
+def csv_stitcher(path='demo_data/', csv_name=''):
     """
     Concatenates all numbered CSVs together - in order - into one CSV file.
     """
